@@ -4,13 +4,23 @@
 
 from openerp import api, models, _
 
+import logging
+_logger = logging.getLogger(__name__)
 
 class Procurement(models.Model):
     _inherit = 'procurement.order'
 
     @api.model
     def _prepare_purchase_request_line(self, purchase_request, procurement):
+        
+        _logger.info("TESTAGU-PROCUREMENT-Prepare PR LINE" )
+        _logger.info("TESTAGU-PROCUREMENT-Prepare PR LINE Origin %s" % (procurement.origin[:5]) )
+        sale_order = self.env['sale.order'].search([('name', '=', procurement.origin[:5])])
+        _logger.info("TESTAGU-PROCUREMENT-Prepare PR LINE SaleOrder %s" % (sale_order) )
+        origin = sale_order.partner_id.display_name + ' ' + procurement.origin[:5]
+        _logger.info("TESTAGU-PROCUREMENT-Prepare PR LINE SaleOrder %s" % (origin) )
         return {
+            'origin': sale_order.partner_id.display_name + ' ' + procurement.origin[:5],
             'product_id': procurement.product_id.id,
             'name': procurement.product_id.name,
             'date_required': procurement.date_planned,
@@ -18,14 +28,16 @@ class Procurement(models.Model):
             'product_qty': procurement.product_qty,
             'request_id': purchase_request.id,
             'procurement_id': procurement.id,
-            'group_id' : procurement.group_id
         }
 
     @api.model
     def _prepare_purchase_request(self, procurement):
 
+        sale_order = self.env['sale.order'].search([('name', '=', procurement.origin[:5])])
+        origin = sale_order.partner_id.display_name + ' ' + procurement.origin[:5]
+
         return {
-            'origin': procurement.origin,
+            'origin': origin,
             'company_id': procurement.company_id.id,
             'picking_type_id': procurement.rule_id.picking_type_id.id,
             'state': 'approved'

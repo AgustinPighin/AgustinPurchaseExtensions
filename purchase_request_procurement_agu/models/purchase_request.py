@@ -37,8 +37,8 @@ class PurchaseRequest(models.Model):
         self._check_reset_allowed()
         return super(PurchaseRequest, self).button_draft()
 
-class PurchaseRequestLine(models.Model):
+#class PurchaseRequestLine(models.Model):
     
-    _inherit = 'purchase.request.line'
+ #   _inherit = 'purchase.request.line'
     
-    group_id = fields.Many2one('procurement.group', string="Procurement Group", copy=False)
+    #group_id = fields.Many2one('procurement.group', string="Procurement Group", copy=False)
