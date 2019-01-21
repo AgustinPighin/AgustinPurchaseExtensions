@@ -33,9 +33,15 @@ class Procurement(models.Model):
     @api.model
     def _prepare_purchase_request(self, procurement):
 
+        _logger.info("TESTAGU-PROCUREMENT-Prepare PR" )
+        _logger.info("TESTAGU-PROCUREMENT-Prepare PR Procurement origin %s" % (procurement.origin[:5]) )
+        
         sale_order = self.env['sale.order'].search([('name', '=', procurement.origin[:5])])
+        _logger.info("TESTAGU-PROCUREMENT-Prepare PR Sale order partner name %s" % (sale_order.partner_id.display_name) )
+        
         origin = sale_order.partner_id.display_name + '/' + procurement.origin[:5]
-
+        _logger.info("TESTAGU-PROCUREMENT-Prepare PR Origin %s" % (origin) )
+        
         return {
             'origin': origin,
             'company_id': procurement.company_id.id,
