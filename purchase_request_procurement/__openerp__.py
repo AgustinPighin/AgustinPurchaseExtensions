@@ -4,7 +4,7 @@
 
 {
     "name": "Purchase Request Procurement Extended",
-    "version": "9.0.0.1.3",
+    "version": "9.0.0.1.4",
     "author": "Agustin Pighin" 
               "Eficent Business and IT Consulting Services S.L., "
               "Odoo Community Association (OCA)" ,
