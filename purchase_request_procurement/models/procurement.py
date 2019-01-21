@@ -34,7 +34,7 @@ class Procurement(models.Model):
     def _prepare_purchase_request(self, procurement):
 
         sale_order = self.env['sale.order'].search([('name', '=', procurement.origin[:5])])
-        origin = sale_order.partner_id.display_name + ' ' + procurement.origin[:5]
+        origin = sale_order.partner_id.display_name + '/' + procurement.origin[:5]
 
         return {
             'origin': origin,
