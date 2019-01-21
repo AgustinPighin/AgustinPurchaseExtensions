@@ -39,8 +39,12 @@ class Procurement(models.Model):
         sale_order = self.env['sale.order'].search([('name', '=', procurement.origin[:5])])
         _logger.info("TESTAGU-PROCUREMENT-Prepare PR Sale order partner name %s" % (sale_order.partner_id.display_name) )
         
-        origin = sale_order.partner_id.display_name + '/' + procurement.origin[:5]
-        _logger.info("TESTAGU-PROCUREMENT-Prepare PR Origin %s" % (origin) )
+        if sale_order.partner_id.display_name:
+            origin = sale_order.partner_id.display_name + '-' + procurement.origin[:5]
+            _logger.info("TESTAGU-PROCUREMENT-Prepare PR Origin %s" % (origin) )
+        else:
+            origin = 'Sale Order' + procurement.origin[:5]
+            _logger.info("TESTAGU-PROCUREMENT-Prepare PR Origin %s" % (origin) )
         
         return {
             'origin': origin,
