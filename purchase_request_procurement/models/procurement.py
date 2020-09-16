@@ -12,24 +12,13 @@ class Procurement(models.Model):
 
     @api.model
     def _prepare_purchase_request_line(self, purchase_request, procurement):
-        
-        _logger.info("TESTAGU-PROCUREMENT-Prepare PR LINE" )
-        _logger.info("TESTAGU-PROCUREMENT-Prepare PR LINE Origin %s" % (procurement.origin[:5]) )
-        sale_order = self.env['sale.order'].search([('name', '=', procurement.origin[:5])])
-        _logger.info("TESTAGU-PROCUREMENT-Prepare PR LINE SaleOrder %s" % (sale_order) )
-        
-        if sale_order.partner_id.display_name:
-            origin = sale_order.partner_id.display_name + '-' + procurement.origin[:5]
-            _logger.info("TESTAGU-PROCUREMENT-Prepare PR LINE SaleOrder %s" % (origin) )
+                
+        if  procurement.group_id.partner_id.name:
+            origin = procurement.group_id.partner_id.name + '-' + procurement.group_id.display_name
         else:
-            origin = 'Sale Order' + procurement.origin[:5]
-            _logger.info("TESTAGU-PROCUREMENT-Prepare PR LINE SaleOrder %s" % (origin) )
-
-        #origin = sale_order.partner_id.display_name + ' ' + procurement.origin[:5]
-        #_logger.info("TESTAGU-PROCUREMENT-Prepare PR LINE SaleOrder %s" % (origin) )
+            origin = 'Sale Order' + procurement.origin
 
         return {
-#            'origin': sale_order.partner_id.display_name + ' ' + procurement.origin[:5],
             'origin': origin,
             'product_id': procurement.product_id.id,
             'name': procurement.product_id.name,
@@ -43,18 +32,10 @@ class Procurement(models.Model):
     @api.model
     def _prepare_purchase_request(self, procurement):
 
-        _logger.info("TESTAGU-PROCUREMENT-Prepare PR" )
-        _logger.info("TESTAGU-PROCUREMENT-Prepare PR Procurement origin %s" % (procurement.origin[:5]) )
-        
-        sale_order = self.env['sale.order'].search([('name', '=', procurement.origin[:5])])
-        _logger.info("TESTAGU-PROCUREMENT-Prepare PR Sale order partner name %s" % (sale_order.partner_id.display_name) )
-
-        if sale_order.partner_id.display_name:
-            origin = sale_order.partner_id.display_name + '-' + procurement.origin[:5]
-            _logger.info("TESTAGU-PROCUREMENT-Prepare PR Origin name %s" % (origin) )
+        if procurement.group_id.partner_id.name:
+            origin = procurement.group_id.display_name + '-' + procurement.group_id.partner_id.name
         else:
-            origin = 'Sale Order' + procurement.origin[:5]
-            _logger.info("TESTAGU-PROCUREMENT-Prepare PR Origin %s" % (origin) )
+            origin = 'Sale Order' + procurement.group_id.display_name
         
         return {
             'origin': origin,
